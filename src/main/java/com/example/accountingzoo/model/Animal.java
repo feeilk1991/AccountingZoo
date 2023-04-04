@@ -1,14 +1,16 @@
 package com.example.accountingzoo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.accountingzoo.model.dictionary.AnimalType;
+import jakarta.persistence.*;
 import lombok.Data;
 @Data
 @Entity
+@Table(name = "animal")
 public class Animal {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    private String name;
+    private AnimalType animalType;
+
 }
