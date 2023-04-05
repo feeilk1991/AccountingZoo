@@ -1,6 +1,5 @@
 package com.example.accountingzoo.controller;
 
-import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.model.Product;
 import com.example.accountingzoo.service.ProductService;
 import lombok.AllArgsConstructor;
