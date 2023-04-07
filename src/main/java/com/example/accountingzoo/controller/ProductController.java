@@ -1,12 +1,16 @@
 package com.example.accountingzoo.controller;
 
-import com.example.accountingzoo.model.Product;
+import com.example.accountingzoo.model.*;
 import com.example.accountingzoo.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -14,22 +18,31 @@ import java.net.URI;
 public class ProductController {
     private final ProductService productService;
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ProductResponse> findAllProducts() {
+        return productService.findAll();
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getAnimalById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
-        return ResponseEntity.ok(product);
+    public ProductResponse getProductId (@PathVariable Long id) {
+        return productService.getById(id);
     }
 
-    @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createProduct = productService.createProduct(product);
-        return ResponseEntity.created(URI.create("/products/" + createProduct.getId())).body(createProduct);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createProduct (@Valid @RequestBody ProductRequest request) {
+        final Long id = productService.createProduct(request);
+        final URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct (@PathVariable Long id, @RequestBody Product product) {
-        Product updateProduct = productService.updateAnimal(id, product);
-        return ResponseEntity.ok(updateProduct);
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ProductResponse updateProduct (@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
+        return productService.updateProduct(id, request);
     }
 
     @DeleteMapping("/{id}")

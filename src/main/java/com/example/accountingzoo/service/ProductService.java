@@ -1,44 +1,24 @@
 package com.example.accountingzoo.service;
 
 import com.example.accountingzoo.exception.ResourceNotFoundException;
-import com.example.accountingzoo.model.Product;
+import com.example.accountingzoo.model.*;
 import com.example.accountingzoo.repository.ProductRepository;
 import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+public interface ProductService {
+    List<ProductResponse> findAll();
 
-@Service
-@AllArgsConstructor
-public class ProductService {
-    private final ProductRepository productRepository;
+    @Nonnull
+    ProductResponse getById(Long id);
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
-    }
+    Long createProduct(@Nonnull ProductRequest request);
 
-    public Product getProductById (Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
-    }
+    @Nonnull
+    ProductResponse updateProduct(Long id, @Nonnull ProductRequest request);
 
-    public Product createProduct (Product product) {
-        return productRepository.save(product);
-    }
-
-    public Product updateAnimal(Long id, @Nonnull Product updateProduct) {
-        Product product = getProductById(id);
-        if (product != null) {
-            product.setName(updateProduct.getName());
-            product.setType(updateProduct.getType());
-            product.setMeasureType(updateProduct.getMeasureType());
-        }
-
-        return productRepository.save(product);
-    }
-
-    public void deleteProduct (Long id) {
-        productRepository.deleteById(id);
-    }
+    @Nonnull
+    void deleteProduct(Long id);
 }
