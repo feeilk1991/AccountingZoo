@@ -3,10 +3,16 @@ package com.example.accountingzoo.model;
 import com.example.accountingzoo.model.dictionary.MeasureType;
 import com.example.accountingzoo.model.dictionary.ProductType;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Table(name = "products")
 public class Product {
 
@@ -19,4 +25,17 @@ public class Product {
     private MeasureType measureType;
     @Enumerated(EnumType.STRING)
     private ProductType type;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Product product = (Product) o;
+        return id != null && Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
