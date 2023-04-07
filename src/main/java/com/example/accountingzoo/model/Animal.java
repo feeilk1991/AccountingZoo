@@ -1,7 +1,7 @@
 package com.example.accountingzoo.model;
 
 import com.example.accountingzoo.model.dictionary.AnimalType;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 

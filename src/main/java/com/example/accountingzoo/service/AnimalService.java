@@ -1,25 +1,25 @@
 package com.example.accountingzoo.service;
 
-import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.model.AnimalRequest;
 import com.example.accountingzoo.model.AnimalResponse;
-import jakarta.annotation.Nonnull;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
 public interface AnimalService {
 
-    @Nonnull
+    @NonNull
     List<AnimalResponse> findAll();
 
-    @Nonnull
-    AnimalResponse getAnimalById(@Nonnull Long id);
+    @NonNull
+    AnimalResponse getAnimalById(@NonNull Long id);
 
-    Long createAnimal(@Nonnull AnimalRequest request);
+    @NonNull
+    Long createAnimal(@NonNull AnimalRequest request);
 
-    @Nonnull
-    AnimalResponse updateAnimal(Long id, @Nonnull AnimalRequest request);
+    @NonNull
+    AnimalResponse updateAnimal(Long id, @NonNull AnimalRequest request);
 
-    @Nonnull
+    @NonNull
     void deleteAnimal (Long id);
 }

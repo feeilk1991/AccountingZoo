@@ -1,12 +1,14 @@
 package com.example.accountingzoo.model;
 
 import com.example.accountingzoo.model.dictionary.MeasureType;
-import jakarta.persistence.*;
 import lombok.Data;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
-@Embeddable
 @Data
 public class Consumption {
     private LocalDate date;

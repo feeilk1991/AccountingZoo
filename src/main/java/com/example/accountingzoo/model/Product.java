@@ -2,7 +2,7 @@ package com.example.accountingzoo.model;
 
 import com.example.accountingzoo.model.dictionary.MeasureType;
 import com.example.accountingzoo.model.dictionary.ProductType;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 

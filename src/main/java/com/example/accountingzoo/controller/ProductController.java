@@ -2,13 +2,11 @@ package com.example.accountingzoo.controller;
 
 import com.example.accountingzoo.model.*;
 import com.example.accountingzoo.service.ProductService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createProduct (@Valid @RequestBody ProductRequest request) {
+    public ResponseEntity<Void> createProduct (@RequestBody ProductRequest request) {
         final Long id = productService.createProduct(request);
         final URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -41,7 +39,7 @@ public class ProductController {
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductResponse updateProduct (@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
+    public ProductResponse updateProduct (@PathVariable Long id, @RequestBody ProductRequest request) {
         return productService.updateProduct(id, request);
     }
 
@@ -50,6 +48,4 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-
-    // Обработчики HTTP-запросов, использующие ProductService
 }

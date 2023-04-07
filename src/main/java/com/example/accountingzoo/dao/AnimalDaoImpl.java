@@ -1,13 +1,12 @@
 package com.example.accountingzoo.dao;
 
 import com.example.accountingzoo.model.Animal;
-import jakarta.annotation.Nonnull;
+import javax.persistence.*;
+
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -19,7 +18,7 @@ public class AnimalDaoImpl implements AnimalDao {
 
     @Nullable
     @Override
-    public Animal findById(@Nonnull Long id) {
+    public Animal findById(@NonNull Long id) {
         Animal department = entityManager.find(Animal.class, id);
         if (department == null) {
             return null;
@@ -27,7 +26,7 @@ public class AnimalDaoImpl implements AnimalDao {
         return department;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public List<Animal> findAll() {
         TypedQuery<Animal> query = entityManager.createQuery("SELECT animal FROM Animal animal", Animal.class);
@@ -36,22 +35,20 @@ public class AnimalDaoImpl implements AnimalDao {
         return query.getResultList();
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public Animal update(@Nonnull Animal animal) {
-        if (animal != null) {
-            if (animal.getId() != null) {
-                entityManager.persist(animal);
-            } else {
-                entityManager.merge(animal);
-            }
+    public Animal update(@NonNull Animal animal) {
+        if (animal.getId() != null) {
+            entityManager.persist(animal);
+        } else {
+            entityManager.merge(animal);
         }
         return animal;
     }
 
     @Nullable
     @Override
-    public Animal delete(@Nonnull Long id) {
+    public Animal delete(@NonNull Long id) {
         Animal animal = entityManager.find(Animal.class, id);
         if (animal == null) {
             return null;
@@ -61,8 +58,8 @@ public class AnimalDaoImpl implements AnimalDao {
     }
 
     @Override
-    @Nonnull
-    public Long create(@Nonnull Animal entity) {
+    @NonNull
+    public Long create(@NonNull Animal entity) {
         entityManager.persist(entity);
         return entity.getId();
     }

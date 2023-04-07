@@ -4,7 +4,6 @@ import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.model.AnimalRequest;
 import com.example.accountingzoo.model.AnimalResponse;
 import com.example.accountingzoo.service.AnimalService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +43,7 @@ public class AnimalController {
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public AnimalResponse updateAnimal (@PathVariable Long id, @Valid @RequestBody AnimalRequest request) {
+    public AnimalResponse updateAnimal (@PathVariable Long id, @RequestBody AnimalRequest request) {
         return animalService.updateAnimal(id, request);
     }
 

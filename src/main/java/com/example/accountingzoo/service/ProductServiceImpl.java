@@ -7,11 +7,11 @@ import com.example.accountingzoo.model.ProductRequest;
 import com.example.accountingzoo.model.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.annotation.Nonnull;
 
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private final ProductDao productDao;
 
-    @Nonnull
+    @NonNull
     @Override
     @Transactional(readOnly = true)
     public List<ProductResponse> findAll() {
@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductMapper::productResponse).collect(Collectors.toList());
     }
 
-    @Nonnull
+    @NonNull
     @Override
     @Transactional(readOnly = true)
     public ProductResponse getById (Long id) {
@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Long createProduct(@Nonnull ProductRequest request) {
+    public Long createProduct(@NonNull ProductRequest request) {
         Product product = new Product();
         product.setName(request.getName());
         product.setType(request.getType());
@@ -49,10 +49,10 @@ public class ProductServiceImpl implements ProductService {
         return productDao.create(product);
     }
 
-    @Nonnull
+    @NonNull
     @Override
     @Transactional
-    public ProductResponse updateProduct (Long id, @Nonnull ProductRequest request) {
+    public ProductResponse updateProduct (Long id, @NonNull ProductRequest request) {
         var product = getProduct(id);
         product.setId(id);
         var updateProduct = productDao.update(product);
