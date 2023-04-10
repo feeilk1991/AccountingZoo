@@ -1,52 +1,43 @@
 package com.example.accountingzoo.controller;
 
 import com.example.accountingzoo.model.Animal;
-import com.example.accountingzoo.model.AnimalRequest;
-import com.example.accountingzoo.model.AnimalResponse;
-import com.example.accountingzoo.repository.AnimalRepository;
 import com.example.accountingzoo.service.AnimalService;
-import com.example.accountingzoo.service.AnimalServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/animals")
 public class AnimalController {
-    @Autowired
     private AnimalService animalService;
 
-    @Autowired
-    private AnimalRepository animalRepository;
-
-    @PostMapping("/create")
-    public Animal createAnimal(@RequestBody Animal animal) {
-        Animal createResponse = animalService.createAnimal(animal);
-        return createResponse;
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Animal> findAllAnimals() {
+        return animalService.findAnimalsAll();
     }
 
-    @PutMapping("/update")
-    public Student updateStudent(@RequestBody Student student) {
-        Student updateResponse = studentService.update(student);
-        return updateResponse;
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Animal createAnimal(@RequestBody Animal animal) {
+        return animalService.createAnimal(animal);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Animal updateAnimal (@PathVariable Long id, @RequestBody Animal animal) {
+        return animalService.updateAnimal(id, animal);
     }
 
     @GetMapping("/{id}")
-    public Student getStudent(@PathVariable Long id) {
-        Student getReponse = studentService.get(id);
-        return getReponse;
+    public Animal getAnimal (@PathVariable Long id) {
+        return animalService.getAnimalById(id);
     }
 
-    @DeleteMapping("/delete")
-    public String deleteStudent(@RequestBody Student student) {
-        studentService.delete(student);
-        return "Record deleted succesfully";
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteAnimal (@PathVariable Long id) {
+        animalService.deleteAnimal(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -6,15 +6,15 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 public interface ProductService {
-    List<ProductResponse> findAll();
+    List<Product> findAllProducts();
 
     @NonNull
-    ProductResponse getById(Long id);
+    Product getProductId(Long id);
 
-    Long createProduct(@NonNull ProductRequest request);
+    Product createProduct(@NonNull Product request);
 
     @NonNull
-    ProductResponse updateProduct(Long id, @NonNull ProductRequest request);
+    Product updateProduct(Long id, @NonNull Product request);
 
     @NonNull
     void deleteProduct(Long id);

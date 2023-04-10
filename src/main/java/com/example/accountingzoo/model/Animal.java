@@ -21,11 +21,17 @@ public class Animal {
     private String name;
     @Enumerated(EnumType.STRING)
     private AnimalType animalType;
-
-    private boolean isPredator;
-
     @ElementCollection
     private List<Consumption> consumptions = new ArrayList<>();
+    private boolean isPredator;
+
+    public Animal(Long id, String name, AnimalType animalType) {
+        this.id = id;
+        this.animalType = animalType;
+        this.name = name;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

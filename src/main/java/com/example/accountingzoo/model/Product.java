@@ -25,6 +25,14 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
+    public Product(Long id, String name, ProductType type, double currentQuantity, MeasureType measureType) {
+        this.id = id;
+        this.type = type;
+        this.measureType = measureType;
+        this.name = name;
+        this.currentQuantity = currentQuantity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

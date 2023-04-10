@@ -1,70 +1,77 @@
 package com.example.accountingzoo.service;
 
-import com.example.accountingzoo.dao.ProductDao;
+import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.model.Product;
-import com.example.accountingzoo.model.ProductMapper;
-import com.example.accountingzoo.model.ProductRequest;
-import com.example.accountingzoo.model.ProductResponse;
+import com.example.accountingzoo.repository.ProductRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.transaction.Transactional;
+import java.lang.module.ResolutionException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ProductServiceImpl implements ProductService {
-    private final ProductDao productDao;
+    private ProductRepository productRepository;
 
     @Override
-    @Transactional(readOnly = true)
-    public List<ProductResponse> findAll() {
-        return productDao.findAll().stream()
-                .map(ProductMapper::productResponse).collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public ProductResponse getById (Long id) {
-        var product = getProduct(id);
-        return ProductMapper.productResponse(product);
-    }
-
-    @Override
+    @NonNull
     @Transactional
-    public Long createProduct(ProductRequest request) {
+    public List<Product> findAllProducts() {
+        return productRepository.findAll().stream().map(p ->
+                new Product(p.getId(),
+                        p.getName(),
+                        p.getType(),
+                        p.getCurrentQuantity(),
+                        p.getMeasureType())).collect(Collectors.toList());
+    }
+
+    @Override
+    @NonNull
+    @Transactional
+    public Product getProductId (Long id) {
+        return productRepository.findById(id).map(w ->
+                new Product(w.getId(), w.getName(), w.getType(), w.getCurrentQuantity(), w.getMeasureType())).orElseGet(null);
+    }
+
+    @Override
+    @NonNull
+    public Product createProduct (Product request) {
         Product product = new Product();
         product.setName(request.getName());
         product.setType(request.getType());
-        product.setMeasureType(request.getMeasureType());
-        product.setCurrentQuantity(request.getCurrentQuantity());
+        product.setMeasureType(product.getMeasureType());
+        product.setCurrentQuantity(product.getCurrentQuantity());
 
-        return productDao.create(product);
-    }
-
-    @Override
-    @Transactional
-    public ProductResponse updateProduct (Long id, ProductRequest request) {
-        var product = getProduct(id);
-        product.setId(id);
-        var updateProduct = productDao.update(product);
-        return ProductMapper.productResponse(updateProduct);
-    }
-
-    @Override
-    @Transactional
-    public void deleteProduct (Long id) {
-        productDao.delete(id);
-    }
-
-    private Product getProduct(Long id) {
-        var product = productDao.findById(id);
-        if (product == null) {
-            throw new EntityNotFoundException("Product with id " + id + " not found");
-        }
         return product;
+    }
+
+    @Override
+    @NonNull
+    public Product updateProduct (Long id, @NonNull Product request) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            product.setName(request.getName());
+            product.setType(request.getType());
+            product.setMeasureType(request.getMeasureType());
+            product.setCurrentQuantity(request.getCurrentQuantity());
+
+            productRepository.save(product);
+        } else throw new ResolutionException();
+
+        return productOptional.get();
+    }
+
+    @Override
+    public void deleteProduct (Long id) {
+        Product product = productRepository.getReferenceById(id);
+        productRepository.delete(product);
     }
 }

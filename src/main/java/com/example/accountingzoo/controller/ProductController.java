@@ -17,29 +17,22 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProductResponse> findAllProducts() {
-        return productService.findAll();
+    public List<Product> findAllProducts() {
+        return productService.findAllProducts();
     }
 
     @GetMapping("/{id}")
-    public ProductResponse getProductId (@PathVariable Long id) {
-        return productService.getById(id);
+    public Product getProductId (@PathVariable Long id) {
+        return productService.getProductId(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createProduct (@RequestBody ProductRequest request) {
-        final Long id = productService.createProduct(request);
-        final URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(id)
-                .toUri();
-
-        return ResponseEntity.created(uri).build();
+    public Product createProduct (@RequestBody Product request) {
+        return productService.createProduct(request);
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductResponse updateProduct (@PathVariable Long id, @RequestBody ProductRequest request) {
+    public Product updateProduct (@PathVariable Long id, @RequestBody Product request) {
         return productService.updateProduct(id, request);
     }
 
