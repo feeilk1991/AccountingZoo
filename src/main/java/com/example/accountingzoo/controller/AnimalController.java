@@ -3,8 +3,11 @@ package com.example.accountingzoo.controller;
 import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.model.AnimalRequest;
 import com.example.accountingzoo.model.AnimalResponse;
+import com.example.accountingzoo.repository.AnimalRepository;
 import com.example.accountingzoo.service.AnimalService;
+import com.example.accountingzoo.service.AnimalServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,39 +20,33 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/animals")
 public class AnimalController {
-    private final AnimalService animalService;
+    @Autowired
+    private AnimalService animalService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AnimalResponse> findAllAnimals() {
-        return animalService.findAll();
+    @Autowired
+    private AnimalRepository animalRepository;
+
+    @PostMapping("/create")
+    public Animal createAnimal(@RequestBody Animal animal) {
+        Animal createResponse = animalService.createAnimal(animal);
+        return createResponse;
+    }
+
+    @PutMapping("/update")
+    public Student updateStudent(@RequestBody Student student) {
+        Student updateResponse = studentService.update(student);
+        return updateResponse;
     }
 
     @GetMapping("/{id}")
-    public AnimalResponse findAnimalGetById (@PathVariable Long id) {
-        return animalService.getAnimalById(id);
+    public Student getStudent(@PathVariable Long id) {
+        Student getReponse = studentService.get(id);
+        return getReponse;
     }
 
-
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createAnimal (@RequestBody AnimalRequest request) {
-        final Long id = animalService.createAnimal(request);
-        final URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(id)
-                .toUri();
-
-        return ResponseEntity.created(uri).build();
-    }
-
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public AnimalResponse updateAnimal (@PathVariable Long id, @RequestBody AnimalRequest request) {
-        return animalService.updateAnimal(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAnimal(@PathVariable Long id) {
-        animalService.deleteAnimal(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete")
+    public String deleteStudent(@RequestBody Student student) {
+        studentService.delete(student);
+        return "Record deleted succesfully";
     }
 }
