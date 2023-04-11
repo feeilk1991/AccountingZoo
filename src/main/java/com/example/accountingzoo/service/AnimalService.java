@@ -12,7 +12,7 @@ public interface AnimalService {
     List<Animal> findAnimalsAll();
 
     @NonNull
-    Animal getAnimalById(@NonNull Long id);
+    Animal getAnimalById(Long id);
 
     @NonNull
     Animal createAnimal(@NonNull Animal request);

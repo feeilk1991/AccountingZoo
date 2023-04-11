@@ -2,6 +2,7 @@ package com.example.accountingzoo.service;
 
 import com.example.accountingzoo.exception.ResourceNotFoundException;
 import com.example.accountingzoo.model.Animal;
+import com.example.accountingzoo.model.Product;
 import com.example.accountingzoo.repository.AnimalRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ public class AnimalServiceImpl implements AnimalService {
     @NonNull
     @Transactional
     public Animal getAnimalById(@NonNull Long id) {
-        return animalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not amimals %s" + id));
+        return animalRepository.findById(id).map(w ->
+                new Animal(w.getId(), w.getName(), w.getAnimalType())).orElseGet(null);
     }
 
     @Override
