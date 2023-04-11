@@ -2,7 +2,7 @@ package com.example.accountingzoo.controller;
 
 import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.service.AnimalService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/animals")
 public class AnimalController {
-    private AnimalService animalService;
+    final AnimalService animalService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Animal> findAllAnimals() {

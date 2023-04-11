@@ -1,5 +1,6 @@
 package com.example.accountingzoo.service;
 
+import com.example.accountingzoo.exception.ResourceNotFoundException;
 import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.repository.AnimalRepository;
 import lombok.NonNull;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AnimalServiceImpl implements AnimalService {
-    private AnimalRepository animalRepository;
+    final AnimalRepository animalRepository;
 
     @Override
     @NonNull
@@ -30,13 +31,14 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     @NonNull
     @Transactional
-    public Animal getAnimalById(Long id) {
-        return animalRepository.findById(id).map(w -> new Animal(w.getId(), w.getName(), w.getAnimalType())).orElseGet(null);
+    public Animal getAnimalById(@NonNull Long id) {
+        return animalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not amimals %s" + id));
     }
 
     @Override
     @NonNull
-    public Animal createAnimal(Animal request) {
+    public Animal createAnimal(@NonNull Animal request) {
         Animal animal = new Animal();
         animal.setName(request.getName());
         animal.setAnimalType(request.getAnimalType());

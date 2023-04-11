@@ -1,6 +1,5 @@
 package com.example.accountingzoo.service;
 
-import com.example.accountingzoo.model.Animal;
 import com.example.accountingzoo.model.Product;
 import com.example.accountingzoo.repository.ProductRepository;
 import lombok.NonNull;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductServiceImpl implements ProductService {
-    private ProductRepository productRepository;
+    final ProductRepository productRepository;
 
     @Override
     @NonNull

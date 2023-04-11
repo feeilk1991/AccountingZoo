@@ -2,19 +2,17 @@ package com.example.accountingzoo.controller;
 
 import com.example.accountingzoo.model.*;
 import com.example.accountingzoo.service.ProductService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import java.net.URI;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
-    private final ProductService productService;
+    final ProductService productService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Product> findAllProducts() {
